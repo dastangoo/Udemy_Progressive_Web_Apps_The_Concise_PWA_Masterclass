@@ -4,8 +4,16 @@
 if (navigator.serviceWorker) {
 
   // Register the SW
-  navigator.serviceWorker.register('./sw.js', {scope: '/posts/'}).then(function(registration){
-    console.log('SW Registered');
+  navigator.serviceWorker.register('./sw.js').then(function(registration){
+    //console.log(registration);
+    registration.onupdatefound = () => {
+        console.log("New SW Found");
+        let newSW = registration.installing;
+
+        newSW.onstatechange = () => {
+            console.log(newSW.state);
+        }
+    }
 
   }).catch(console.log);
 
