@@ -1,26 +1,35 @@
 
 // Progressive Enhancement (SW supported)
 // if ('serviceWorker' in navigator) {
-if (navigator.serviceWorker) {
+//if (navigator.serviceWorker) {
 
-  // Register the SW
-  navigator.serviceWorker.register('./sw.js').then(function(registration){
-    //registration.onupdatefound = () => {
-        //let newSW = registration.installing;
-         ////Prompt User for update
-        //if (confirm("App update found. Do you want to update now?")) {
-            //newSW.postMessage('update_self');
-        //}
-    //}
+  //Register the SW
+  //navigator.serviceWorker.register('./sw.js').then(function(registration){
+  //}).catch(console.log);
+//}
 
-    if (registration.active) {
-        registration.active.postMessage('respond to this');
+// Notification Support
+if (window.Notification) {
+    function showNotification () {
+        //console.log('A new Notification');
+        let notificationOpts = {
+            body: 'Some notification information.',
+            icon: './icon.png'
+        }
+        let n = new Notification('My new Notification.', notificationOpts);
+        n.onclick = () => {
+            console.log('Notification Clicked');
+        }
     }
 
-    
-  }).catch(console.log);
-  navigator.serviceWorker.addEventListener('message', (e) => {
-      console.log(e.data);
-  })
+    // Manage permission
+    if (Notification.permission === 'granted') {
+        showNotification();
+    } else if (Notification.permission !== 'denied'){
+        Notification.requestPermission((permission) => {
+            if (permission === 'granted') {
+                showNotification();
+            }
+        });
+    }
 }
-
