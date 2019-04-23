@@ -5,17 +5,22 @@ if (navigator.serviceWorker) {
 
   // Register the SW
   navigator.serviceWorker.register('./sw.js').then(function(registration){
-    //console.log(registration);
-    registration.onupdatefound = () => {
-        console.log("New SW Found");
-        let newSW = registration.installing;
+    //registration.onupdatefound = () => {
+        //let newSW = registration.installing;
+         ////Prompt User for update
+        //if (confirm("App update found. Do you want to update now?")) {
+            //newSW.postMessage('update_self');
+        //}
+    //}
 
-        newSW.onstatechange = () => {
-            console.log(newSW.state);
-        }
+    if (registration.active) {
+        registration.active.postMessage('respond to this');
     }
 
+    
   }).catch(console.log);
-
+  navigator.serviceWorker.addEventListener('message', (e) => {
+      console.log(e.data);
+  })
 }
 
