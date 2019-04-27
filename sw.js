@@ -1,5 +1,7 @@
 // Service Worker
 
-self.addEventListener('push', () => {
-    console.log('Push Received');
-})
+// Send notification on push
+self.addEventListener('push', (e) => {
+    let n = self.registration.showNotification('A notification from the SW.');
+    e.waitUntil(n);
+});
