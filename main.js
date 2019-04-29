@@ -8,13 +8,11 @@
   //}).catch(console.log);
 //}
 if (window.caches) {
-    //caches.open('test1');
-    //caches.open('test2');
-    //caches.keys().then(console.log);
-    //caches.has('test1').then(console.log);
-    //caches.has('test3').then(console.log);
-    //caches.delete('test1').then(console.log);
-    caches.open('test2').then((cache) => {
-            
+    caches.open('pwa-v1.1').then((cache) => {
+        //cache.put('index.html', new Response('My own HTML'));
+        //cache.match('/index.html').then((res) => {
+            //res.text().then(console.log);
+        //})
+        cache.keys().then(console.log);
     });
 }
