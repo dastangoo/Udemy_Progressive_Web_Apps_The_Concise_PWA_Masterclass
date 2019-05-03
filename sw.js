@@ -4,80 +4,28 @@
 const pwaCache = 'pwa-cache-1';
 
 // Static assets to cache on install
-const staticCache = ['/', 'index.html', '/style.css', '/main.js', '/thumb.png', '/placeholder.png'];    
+const staticCache = ['/', 'index.html', '/style.css', '/main.js', '/thumb.png', '/placeholder.png', 'page2.html'];    
 
-// SW fetch handler with different caching strategies
+// SW fetch handler
 self.addEventListener('fetch', (e) => {
-    // 1. Cache only. Static assets - App Shell
-    //e.respondWith(caches.match(e.request));
+    // Cache with Network Fallback
+    let res = caches.match(e.request).then((res) => {
+        
+        // Check cache has response
+        if (res) return res;
 
-    // 2. Cache with Network Fallback
-    //e.respondWith(
-        //caches.match(e.request).then((res) => {
-            //if (res) return res;
+        // Fallback to Network
+        return fetch(e.request).then((fetchRes) => {
             
-            //Fallback 
-            //return fetch(e.request).then((newRes) => {
-                //Cache fetched response
-                //caches.open(pwaCache).then(cache => cache.put(e.request, newRes));
-                //return newRes.clone();
-            //});
+            // Cache fetched response
+            caches.open(pwaCache).then(cache => cache.put(e.request, fetchRes));
 
-        //})
-    //)
-
-    // 3. Network wih cache fallback
-     //e.respondWith(
-         //fetch(e.request).then((res) => {
-             // Cache latest version
-             //caches.open(pwaCache).then(cache => cache.put(e.request, res));
-             //return res.clone();
-         // Fallback to cache
-         //}).catch(err => caches.match(e.request))
-     //);
-
-    // 4. Cache with network update
-    //e.respondWith(
-        //caches.open(pwaCache).then((cache) => {
-            // Return from cache
-            //return cache.match(e.request).then((res) => {
-                // Update 
-                //let updateRes = fetch(e.request).then((newRes) => {
-                    // Cache new response
-                    //cache.put(e.request, newRes.clone());
-                    //return newRes;
-                //});
-                //return res || updateRes;
-            //});
-        //}));
-    // 5. Cache & Network Race with offline content
-    let firstResponse = new Promise((resolve, reject) => {
-       // Track rejections 
-       let firstRejectionReceived = false;
-       let rejectOnce = () => {
-           if (firstRejectionReceived) {
-               if (e.request.url.match('thumb.png')) {
-                   resolve(caches.match('/placeholder.png'));
-               } else {
-                   reject('No response received.');
-               }
-           } else {
-               firstRejectionReceived = true;   
-           }
-       }
-       // Try Network
-       fetch(e.request).then((res) => {
-           // Check res ok 
-           res.ok ? resolve(res) : rejectOnce();
-       }).catch(rejectOnce);
-
-       // Try Cache
-       caches.match(e.request).then((res) => {
-           // Check cache found
-           res ? resolve(res) : rejectOnce();
-       }).catch(rejectOnce);
-    });
-    e.respondWith(firstResponse);
+            // Return clone of fetched response
+            return fetchRes.clone();
+        });
+    })
+    // Respond
+    e.respondWith(res);
 });
 
 // SW install and cache static assets
