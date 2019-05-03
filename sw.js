@@ -1,7 +1,7 @@
 // Service Worker
 
 // Cache name
-const pwaCache = 'pwa-cache-1';
+const pwaCache = 'pwa-cache-2';
 
 // Static assets to cache on install
 const staticCache = ['/', 'index.html', '/style.css', '/main.js', '/thumb.png', '/placeholder.png', 'page2.html'];    
