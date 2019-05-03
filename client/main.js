@@ -1,0 +1,25 @@
+// Service Worker Registration
+let swReg;
+// Update UI for subscribed status
+const setSubscribeStatus = (state) => {
+    if (state) {
+        document.getElementById('subscribe').className = 'hidden'
+        document.getElementById('unsubscribe').className = '';
+    } else {
+        document.getElementById('subscribe').className = '';
+        document.getElementById('unsubscribe').className = 'hidden';
+    }
+}
+
+// Register Service Worker
+navigator.serviceWorker.register('sw.js').then(registration => {
+    // Reference registration 
+    swReg = registration;
+
+    // Check if a subscription exists, and if so, update the UI
+    //swReg.pushManager.getSubscription().then(subscription or null)
+    swReg.pushManager.getSubscription().then(setSubscribeStatus);
+// Log errors
+}).catch(console.error);
+
+fetch('http://localhost:3333').then(res => res.text()).then(console.log);
