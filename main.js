@@ -2,6 +2,15 @@
 if (navigator.serviceWorker) {
     // Register SW
     navigator.serviceWorker.register('sw.js').catch(console.error);
+
+    // Giphy cache clean
+     function giphyCacheClean(giphys) {
+        // Get service worker registration
+        navigator.serviceWorker.getRegistration().then(function(reg){
+            // Only post message to acgive SW
+            if (reg.active) reg.active.postMessage({ action: 'cleanGiphyCache', giphys: giphys });
+        })
+     }
 }
 
 // Giphy API object
@@ -27,9 +36,14 @@ function update() {
 
             // Empty Element
             $('#giphys').empty();
+            
+            // Populate array of latest Giphys
+            var latestGiphys = [];
 
             // Loop Giphys
             $.each( res.data, function (i, giphy) {
+                // Add to latest Giphys
+                latestGiphys.push(giphy.images.downsized_large.url);
 
                 // Add Giphy HTML
                 $('#giphys').prepend(
@@ -38,6 +52,10 @@ function update() {
                     '</div>'
                 );
             });
+
+            // console.log(latestGiphys);
+            // Inform the SW (if available) of current Giphys
+            if (navigator.serviceWorker) giphyCacheClean(latestGiphys);
         })
 
         // Failure
