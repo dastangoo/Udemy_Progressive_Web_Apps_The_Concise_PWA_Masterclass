@@ -7,4 +7,6 @@ npm i web-push
 node_modules/.bin/web-push generate-vapid-keys --json > server/vapid.json
 npm i urlsafe-base64
 npm i node-storage
+curl -X POST http://localhost:3333/push
+curl -X -d "Hello World" POST http://localhost:3333/push
 ```
