@@ -1,0 +1,17 @@
+{
+  "name": "pwa",
+  "version": "1.0.0",
+  "description": "Simple Photo-caption PWA",
+  "main": "server/",
+  "repository": " ",
+  "author": "dastangoo <hamed.dastangoo@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server/"
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "express": "^4.16.4",
+    "jquery": "^3.4.1"
+  }
+}
