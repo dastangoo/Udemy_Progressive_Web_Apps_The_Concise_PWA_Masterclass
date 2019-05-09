@@ -1,48 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Photo Message</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="mobile-web-app-capable" content="yes">
-    <!--Styles -->
-    <link rel="stylesheet" href="/modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <head>
+        <meta charset="UTF-8">
+        <title>Photo Message</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="mobile-web-app-capable" content="yes">
+        <!--Styles -->
+        <link rel="stylesheet" href="/modules/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/modules/toastr/build/toastr.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        <style media="screen">
+            #toast-container {
+                top:0;
+                left: 0;
+                width: 100%;
+            }
 
-</head>
-<body class="bg-info">
-    <main class="p-2">
+            #toast-container > div {
+                opacity: 1;
+                box-shadow: 0 0 2rem rgba(0, 0, 0, 0.75);
+                border-radius: 0;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body class="bg-info">
+        <main class="p-2">
         <div class="container-fluid" id="messages">
             <div class="text-center text-light" id="loader" style="margin-top:10rem;">
                 <i class="fas fa-spinner fa-2x fa-pulse"></i>
                 <p>Loading Messages</p>
             </div>
         </div>
-    </main>
+        </main>
 
-    <div class="container-fluid fixed-bottom">
-        <div id="toolbar" class="row bg-dark">
-            <div class="col p-2 d-flex">
-                <button data-toggle="modal" data-target="#viewfinder" id="camera" class="fas fa-camera fa-lg px-3 mr-2 text-light border-light bg-dark rounded-circle"></button>
-                <textarea id="caption" placeholder="Image Caption..." style="resize:none;" class="flex-grow-1 w-100 rounded border-light align-middle pr-5" maxlength="120"></textarea>
-                <button id="send" style="right: 1.25rem;bottom: 1.25rem;padding: 0.5rem;"class="fas fa-paper-plane fa-lg position-absolute text-dark"></button>
-            </div>
-        </div>
-    </div>
-
-    <!--Camera Modal-->
-    <div id="viewfinder" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog fixed-bottom" role="document">
-            <div class="modal-content bg-dark">
-                <div class="modal-body pr-1 text-center">
-                    <video id="player" autoplay class="w-100 rounded bg-white" style="height:300px;"></video>
-                    <button data-dismiss="modal" type="button" id="shutter" class="fas fa-circle fa-3x rounded-circle bg-white text-danger p-1 my-2"></button>
+        <div class="container-fluid fixed-bottom">
+            <div id="toolbar" class="row bg-dark">
+                <div class="col p-2 d-flex">
+                    <button data-toggle="modal" data-target="#viewfinder" id="camera" class="fas fa-camera fa-lg px-3 mr-2 text-light border-light bg-dark rounded-circle"></button>
+                    <textarea id="caption" placeholder="Image Caption..." style="resize:none;" class="flex-grow-1 w-100 rounded border-light align-middle pr-5" maxlength="120"></textarea>
+                    <button id="send" style="right: 1.25rem;bottom: 1.25rem;padding: 0.5rem;"class="fas fa-paper-plane fa-lg position-absolute text-dark"></button>
                 </div>
             </div>
         </div>
-    </div>
-    <!--Scripts-->
-    <script src="/modules/jquery/dist/jquery.min.js"></script>
-    <script src="/modules/bootstrap/dist/js/bootstrap.min.js"></script>
-</body>
+
+        <!--Camera Modal-->
+        <div id="viewfinder" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog fixed-bottom" role="document">
+                <div class="modal-content bg-dark">
+                    <div class="modal-body pr-1 text-center">
+                        <video id="player" autoplay class="w-100 rounded bg-white" style="height:300px;"></video>
+                        <button data-dismiss="modal" type="button" id="shutter" class="fas fa-circle fa-3x rounded-circle bg-white text-danger p-1 my-2"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Scripts-->
+        <script src="/modules/jquery/dist/jquery.min.js"></script>
+        <script src="/modules/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/main.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/modules/toastr/build/toastr.min.js" type="text/javascript" charset="utf-8"></script>
+
+        <!--Init App if Supported-->
+        <script>
+            // Check Compatibility
+            // if('mediaDevices_fake' in navigator) {
+            if('mediaDevices' in navigator) {
+                // Init App
+                _init();
+            } else {
+                // console.log('App not supported');
+                // Show notification
+                toastr.error(null, 'This app is not suppported by your browser.', {timeout: 30000});
+            }
+        </script>
+    </body>
 </html>
