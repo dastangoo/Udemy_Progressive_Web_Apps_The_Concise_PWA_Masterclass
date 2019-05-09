@@ -67,21 +67,22 @@
         </div>
       </div>
     </div>
-    
-    <!--Photo Modal-->
-    <div id="photoframe" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body p-1">
-                    <img src="" alt="" class="w-100 rounded" data-dismiss="modal">
-                </div>
-            </div>
+
+    <!-- Photo Modal -->
+    <div class="modal fade" id="photoframe" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body p-1">
+            <img src="" class="w-100 rounded" data-dismiss="modal">
+          </div>
         </div>
+      </div>
     </div>
+
     <!-- Scripts -->
     <script src="/modules/jquery/dist/jquery.min.js"></script>
     <script src="/modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/socket.io/socket.io.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/modules/toastr/build/toastr.min.js"></script>
     <script src="/Classes/Camera.js"></script>
     <script src="/Classes/Message.js"></script>
@@ -95,7 +96,13 @@
 
         // Init App
         _init();
-
+        
+        // Register SW if supported
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load',() => {
+                navigator.serviceWorker.register('/sw.js');
+            })
+        }
       } else {
         // Show notification
         toastr.error( null, 'This app is not supported by your browser.', {timeout: 30000});
