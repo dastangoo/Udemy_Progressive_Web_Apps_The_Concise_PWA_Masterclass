@@ -4,4 +4,5 @@ yarn add bootstrap
 yarn add jquery
 yarn add express
 yarn start
+yarn add toastr
 ```
