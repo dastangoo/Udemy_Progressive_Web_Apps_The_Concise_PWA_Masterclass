@@ -1,5 +1,4 @@
-//console.log('Hello from main.js');
-
+console.log('Hello');
 // Init new camera instance on the player node
 const camera = new Camera( $('#player')[0] );
 

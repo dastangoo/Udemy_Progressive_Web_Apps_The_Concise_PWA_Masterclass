@@ -6,6 +6,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#19A2B8">
+    <link rel="icon" href="/icons/favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="manifest.json">
 
     <!-- Styles -->
     <link rel="stylesheet" href="/modules/bootstrap/dist/css/bootstrap.min.css">
@@ -55,7 +58,7 @@
     </div>
 
     <!-- Camera Modal -->
-    <div id="viewfinder" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div id="viewfinder" class="modal fade" tabindex="-1" role="dialog" area-hidden="true">
       <div class="modal-dialog fixed-bottom" role="document">
         <div class="modal-content bg-dark">
           <div class="modal-body p-1 text-center">
@@ -69,7 +72,7 @@
     </div>
 
     <!-- Photo Modal -->
-    <div class="modal fade" id="photoframe" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="photoframe" tabindex="-1" role="dialog" area-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-body p-1">
@@ -96,13 +99,14 @@
 
         // Init App
         _init();
-        
+
         // Register SW if supported
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load',() => {
-                navigator.serviceWorker.register('/sw.js');
-            })
+        if ( 'serviceWorker' in navigator ) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js');
+          });
         }
+
       } else {
         // Show notification
         toastr.error( null, 'This app is not supported by your browser.', {timeout: 30000});
