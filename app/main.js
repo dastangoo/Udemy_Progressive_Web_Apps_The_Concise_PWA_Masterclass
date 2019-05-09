@@ -5,6 +5,35 @@ const camera = new Camera( $('#player')[0] );
 // Main app logic
 const _init = () => {
 
+  // Init new message instance
+  const messages = new Message();
+
+  // Notify user of connection erros
+  window.addEventListener('messages_error', () => {
+      toastr.error('Messages could not be retrieved.<br>Will keep trying.', 'Network Connection Error');
+  });
+
+  // Listen for existing messages from server
+  window.addEventListener('messages_ready', (e) => {
+      
+      // Remove the loader
+      $('#loader').remove();
+
+      // Check some messages exist
+      if (messages.all.length == 0) toastr.info('Add the first message.', 'No Messages');
+
+      // Empty out existing messages if this update is from a reconnection
+      $('#messages').empty();
+
+      // Loop and render all messages (reverse as we're prepending)
+      messages.all.reverse().forEach(renderMessage);
+  });
+
+  // Listen for new message event
+  window.addEventListener('new_message', (e) => {
+     renderMessage(e.detail);
+  });
+
   // Switch on camera in viewfinder
   $('#viewfinder').on("show.bs.modal", () => {
     camera.switch_on();
@@ -41,10 +70,15 @@ const _init = () => {
     //console.log('adding message');
     //console.log(caption);
     
+    // Add new messages
+    let message = messages.add(camera.photo, caption);
+
+    //console.log(messages.all);
+
     // Render new message in feed
     //renderMessage({photo: camera.photo, caption: caption});
     // ES Shorthand
-    renderMessage({photo: camera.photo, caption});
+    renderMessage(message);
 
     // Reset caption & photo on success
     $('#caption').val('');
@@ -52,7 +86,6 @@ const _init = () => {
     camera.photo = null;
 
   });
-  A
 };
 
 // Create new messages element
@@ -85,4 +118,5 @@ const showPhoto = (e) => {
     // Set to and show photoframe modal
     $('#photoframe img').attr('src', photoSrc);
     $('#photoSrc').modal('show');
+    A
 };
