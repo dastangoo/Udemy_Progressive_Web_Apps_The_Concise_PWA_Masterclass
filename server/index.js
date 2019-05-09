@@ -1,9 +1,9 @@
+
 // Static Express server
 const express = require('express');
 const http = require('http');
-//const Camera = require('./../Classes/Camera');
 
-// Create HTTP Server
+// Create HTTP server
 const app = express();
 const server = http.Server(app);
 
@@ -12,7 +12,6 @@ app.use(express.static(`${__dirname}/../app`));
 
 // Server "node_modules" directory
 app.use('/modules', express.static(`${__dirname}/../node_modules`));
-//app.use('/Classes', express.static(`${__dirname}/../Classes`));
 
 // Start Server
-server.listen(8000, () => console.log('Photo Message running on localhost:8000'));
+server.listen( 8000, () => console.log('Photo Message running on localhost:8000'));

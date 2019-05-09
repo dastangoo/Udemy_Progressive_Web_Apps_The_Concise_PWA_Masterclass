@@ -1,50 +1,88 @@
+
 // Init new camera instance on the player node
-//const camera = new Camera(document.getElementById('player'));
-const camera = new Camera($('#player')[0]);
+const camera = new Camera( $('#player')[0] );
 
 // Main app logic
 const _init = () => {
-    //console.log('App running');
 
-    // Switch on camera in viewfinder
-    $('#viewfinder').on("show.bs.modal", () => {
-        //console.log('camera on');
-        camera.switch_on();
-    });
+  // Switch on camera in viewfinder
+  $('#viewfinder').on("show.bs.modal", () => {
+    camera.switch_on();
+  });
 
-    // Switch off camera in viewfinder
-    $('#viewfinder').on("hidden.bs.modal", () => {
-        //console.log('camera off');
-        camera.switch_off();
-    });
+  // Switch off camera in viewfinder
+  $('#viewfinder').on("hidden.bs.modal", () => {
+    camera.switch_off();
+  });
 
-    // Take photo
-    $('#shutter').on('click', () => {
-        //console.log('take photo');
-        let photo = camera.take_photo();
+  // Take photo
+  $('#shutter').on("click", () => {
 
-        // Show photo preview in camera button
-        $("#camera").css('background-image', `url(${photo})`).addClass('withphoto');
-    });
+    let photo = camera.take_photo();
 
-    // Submit Message
-    $('#send').on('click', () => {
-        // Get caption text
-        let caption = $('#caption').val();
+    // Show photo preview in camera button
+    $('#camera').css('background-image', `url(${photo})`).addClass('withphoto');
+  });
 
-        // Check message is ok
-        if (!camera.photo || !caption) {
-            // Show notification and return
-            toastr.warning('Photo & Caption Required.', 'Incomplete Message');
-            return;
-        }
+  // Submit message
+  $('#send').on("click", () => {
 
-        console.log('adding message');
-        console.log(caption);
+    // Get caption text
+    let caption = $('#caption').val();
 
-        // Reset caption & photo on success
-        $('#caption').val('');
-        $('#camera').css('background-image', '').removeClass('withphoto');
-        camera.photo = null;
-    });
-}
+    // Check message is ok
+    if ( !camera.photo || !caption ) {
+
+      // Show notification and return
+      toastr.warning('Photo & Caption Required.', 'Incomplete Message');
+      return;
+    }
+
+    //console.log('adding message');
+    //console.log(caption);
+    
+    // Render new message in feed
+    //renderMessage({photo: camera.photo, caption: caption});
+    // ES Shorthand
+    renderMessage({photo: camera.photo, caption});
+
+    // Reset caption & photo on success
+    $('#caption').val('');
+    $('#camera').css('background-image', '').removeClass('withphoto');
+    camera.photo = null;
+
+  });
+  A
+};
+
+// Create new messages element
+const renderMessage = (message) => {
+    
+    // Message HTML
+    let msgHTML = `
+        <div style="display:none;" class="row message bg-light mb-2 rounded shadow">
+            <div class="col-2 p-1">
+                <img src="${message.photo}" class="photo w-100 rounded">
+            </div>
+            <div class="col-10 p-1">${message.caption}</div>
+        </div>
+    `;
+    
+    // Prepend to #messages
+    $(msgHTML).prependTo('#messages').show(500)
+
+        // Bind a click handler on new img element to show in modal
+        .find('img').on('click', showPhoto);
+};
+
+// Show message photo in modal
+const showPhoto = (e) => {
+    //console.log('Showing photo');
+
+    // Get photo src
+    let photoSrc = $(e.currentTarget).attr('src');
+
+    // Set to and show photoframe modal
+    $('#photoframe img').attr('src', photoSrc);
+    $('#photoSrc').modal('show');
+};

@@ -1,18 +1,17 @@
 {
-  "name": "pwa",
+  "name": "PhotoMsg",
   "version": "1.0.0",
-  "description": "Simple Photo-caption PWA",
+  "description": "Simple photo-caption PWA",
   "main": "server/",
-  "repository": " ",
-  "author": "dastangoo <hamed.dastangoo@gmail.com>",
+  "author": "Ray Viljoen <ray@stackacademy.tv>",
   "license": "MIT",
   "scripts": {
     "start": "node server/"
   },
   "dependencies": {
-    "bootstrap": "^4.3.1",
-    "express": "^4.16.4",
-    "jquery": "^3.4.1",
+    "bootstrap": "^4.1.1",
+    "express": "^4.16.3",
+    "jquery": "^3.3.1",
     "toastr": "^2.1.4"
   }
 }
