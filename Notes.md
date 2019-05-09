@@ -8,4 +8,6 @@ yarn add toastr
 yarn install
 yarn add nodemon
 yarn add socket.io
+yarn add workbox-build
+npm docs workbox-build
 ```
